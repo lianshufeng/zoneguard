@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZoneGuard</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="brand-header">
+        <img src="../icons/icon32.png" alt="" width="32" height="32" />
+        <div>
+          <h1>ZoneGuard</h1>
+          <p>Timezone control by site</p>
+        </div>
+      </header>
+
+      <section class="panel switch-panel" aria-label="Global settings">
+        <div>
+          <strong>ZoneGuard</strong>
+          <span id="enabled-label" class="muted">Loading…</span>
+        </div>
+        <label class="switch" aria-label="Turn ZoneGuard on or off">
+          <input id="enabled-toggle" type="checkbox" role="switch" />
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <section class="field-section">
+        <label for="timezone-search">Timezone</label>
+        <div class="combobox-wrap">
+          <input id="timezone-search" type="text" autocomplete="off" spellcheck="false" />
+          <ul id="timezone-options" class="combobox-list"></ul>
+        </div>
+      </section>
+
+      <section class="panel site-panel" aria-live="polite">
+        <div class="site-heading">
+          <span class="muted">Current site</span>
+          <span id="site-status" class="status-pill">Checking…</span>
+        </div>
+        <strong id="site-host" class="site-host">—</strong>
+        <p id="site-message" class="site-message"></p>
+        <button id="add-site" class="button button-primary" type="button" hidden>
+          Add to whitelist
+        </button>
+        <button id="manage-current" class="text-button" type="button" hidden>
+          Manage whitelist
+        </button>
+      </section>
+
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+
+      <footer class="popup-footer">
+        <button id="manage-whitelist" class="text-button" type="button">Manage whitelist</button>
+        <span>v0.1.0</span>
+      </footer>
+    </main>
+    <script type="module" src="./popup.ts"></script>
+  </body>
+</html>

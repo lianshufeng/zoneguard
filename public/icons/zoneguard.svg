@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="ZoneGuard">
+  <rect width="128" height="128" rx="28" fill="#185adb"/>
+  <circle cx="55" cy="55" r="31" fill="none" stroke="#fff" stroke-width="7"/>
+  <path d="M24 55h62M55 24c10 9 15 19 15 31S65 77 55 86M55 24C45 33 40 43 40 55s5 22 15 31" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="5"/>
+  <path d="M77 67 105 78v19c0 15-11 24-24 30-13-6-24-15-24-30V78l20-8Z" fill="#fff" stroke="#185adb" stroke-linejoin="round" stroke-width="4"/>
+  <path d="m70 95 8 8 15-17" fill="none" stroke="#185adb" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+</svg>

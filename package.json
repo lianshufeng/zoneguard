@@ -1,0 +1,27 @@
+{
+  "name": "zoneguard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Control your browser timezone on selected websites.",
+  "scripts": {
+    "dev": "vite build --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run --root .",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/chrome": "^0.3.6",
+    "@types/node": "^24.19.2",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

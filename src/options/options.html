@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZoneGuard Settings</title>
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <img src="../icons/icon48.png" alt="" width="42" height="42" />
+        <div>
+          <h1>ZoneGuard</h1>
+          <p>Manage timezone and website access</p>
+        </div>
+      </header>
+
+      <section class="settings-card" aria-labelledby="general-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">General</p>
+            <h2 id="general-title">Protection</h2>
+          </div>
+          <label class="switch" aria-label="Turn ZoneGuard on or off">
+            <input id="enabled-toggle" type="checkbox" role="switch" />
+            <span class="switch-track" aria-hidden="true"></span>
+          </label>
+        </div>
+        <p class="section-copy">Timezone overrides are active only for enabled whitelist rules.</p>
+      </section>
+
+      <section class="settings-card" aria-labelledby="timezone-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Timezone</p>
+            <h2 id="timezone-title">Choose a timezone</h2>
+          </div>
+        </div>
+        <p class="section-copy">Search by city, country, region, or IANA timezone ID.</p>
+        <div class="combobox-wrap">
+          <input id="timezone-search" type="text" autocomplete="off" spellcheck="false" />
+          <ul id="timezone-options" class="combobox-list"></ul>
+        </div>
+      </section>
+
+      <section class="settings-card" aria-labelledby="whitelist-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Whitelist</p>
+            <h2 id="whitelist-title">Website rules</h2>
+          </div>
+        </div>
+        <p class="section-copy">
+          Only websites that match an enabled rule can receive a timezone override.
+        </p>
+        <form id="rule-form" class="rule-form" novalidate>
+          <label class="visually-hidden" for="rule-pattern">Domain or URL pattern</label>
+          <input
+            id="rule-pattern"
+            type="text"
+            placeholder="*.example.com"
+            maxlength="2048"
+            autocomplete="off"
+          />
+          <button class="button button-primary" type="submit">Add rule</button>
+        </form>
+        <p class="examples">
+          Examples: <code>example.com</code> · <code>*.example.com</code> ·
+          <code>https://app.example.com/*</code> · <code>*://*.example.com/*</code>
+        </p>
+        <p id="rule-feedback" class="feedback" role="status" aria-live="polite"></p>
+        <p id="empty-state" class="empty-state" hidden>
+          <strong>No websites are whitelisted yet.</strong>
+          <span>ZoneGuard will not modify any website until you add a rule.</span>
+        </p>
+        <ul id="rule-list" class="rule-list" aria-label="Whitelist rules"></ul>
+      </section>
+
+      <section class="settings-card" aria-labelledby="data-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Settings data</p>
+            <h2 id="data-title">Import and export</h2>
+          </div>
+        </div>
+        <p class="section-copy">
+          Your settings are stored locally in Chrome. Export a backup or import a version 1 JSON
+          file.
+        </p>
+        <div class="button-row">
+          <button id="export-button" class="button button-secondary" type="button">
+            Export settings
+          </button>
+          <button id="import-button" class="button button-secondary" type="button">
+            Import settings
+          </button>
+          <input
+            id="import-file"
+            class="visually-hidden"
+            type="file"
+            accept="application/json,.json"
+          />
+        </div>
+        <p id="data-feedback" class="feedback" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="settings-card about-card" aria-labelledby="about-title">
+        <div>
+          <p class="eyebrow">About</p>
+          <h2 id="about-title">ZoneGuard <span>v0.1.0</span></h2>
+        </div>
+        <p class="section-copy">
+          Timezone control by site. ZoneGuard uses Chrome DevTools Protocol and stores settings on
+          this device only.
+        </p>
+        <p class="privacy-note">
+          Read the bundled <code>PRIVACY.md</code> for the full privacy policy.
+        </p>
+      </section>
+    </main>
+    <script type="module" src="./options.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+# Technical Limitations
+
+- **Tab scope:** Chrome's `Emulation.setTimezoneOverride` applies to a debugger target for a tab. ZoneGuard controls one tab at a time and does not change the operating system timezone or other applications.
+- **Debugger permission:** The `debugger` permission is powerful and Chrome can display a debugging indicator while ZoneGuard controls a tab. The permission is disclosed in the manifest and is required for CDP timezone emulation.
+- **DevTools conflicts:** Chrome DevTools or another debugger may already control a tab. In that case ZoneGuard reports that the debugger is unavailable. It does not detach sessions it did not create and does not retry continuously. Navigation, a settings change, or a user opening the popup can trigger another attempt.
+- **Restricted pages:** Chrome internal pages, extension pages, DevTools pages, and non-HTTP(S) URLs cannot be controlled. Enterprise policy can also restrict debugger access.
+- **System timezone:** ZoneGuard changes the timezone emulation reported to the controlled page. It does not change the device's timezone, clock, locale, or geographic location.
+- **Session lifetime:** The override exists only while ZoneGuard's debugger session is attached. The extension clears the override before detaching when possible; Chrome also ends emulation when the debugger session ends.
+- **Service worker recovery:** The extension stores the IDs of tabs it attached to. After a service worker restart, it sends a harmless timezone command through its own debugger connection to confirm ownership before resuming or detaching. If ownership cannot be confirmed, it leaves that session untouched. A process termination between attach and journal persistence can leave ownership uncertain; recovery favors not disturbing another debugger.
+- **SPA navigation:** `webNavigation` history and fragment events are used to detect client-side URL changes. Sites that change relevant state without changing the tab URL cannot be distinguished by a URL-based whitelist.
+- **Browser changes:** Chrome can change debugger behavior, supported CDP commands, notification UI, and permission policies. ZoneGuard targets stable Google Chrome and may need updates as those APIs evolve.
