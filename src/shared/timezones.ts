@@ -1,4 +1,5 @@
 import type { TimezoneOption } from "./types";
+import { locale, t } from "./i18n";
 
 const featured: Record<string, Omit<TimezoneOption, "id" | "label">> = {
   "America/New_York": {
@@ -76,18 +77,73 @@ const regionNames: Record<string, string> = {
   Pacific: "Pacific",
 };
 
+const cityNamesZh: Record<string, string> = {
+  "America/New_York": "纽约",
+  "America/Los_Angeles": "洛杉矶",
+  "America/Chicago": "芝加哥",
+  "America/Denver": "丹佛",
+  "America/Toronto": "多伦多",
+  "America/Vancouver": "温哥华",
+  "America/Mexico_City": "墨西哥城",
+  "America/Sao_Paulo": "圣保罗",
+  "America/Argentina/Buenos_Aires": "布宜诺斯艾利斯",
+  "Europe/London": "伦敦",
+  "Europe/Paris": "巴黎",
+  "Europe/Berlin": "柏林",
+  "Europe/Madrid": "马德里",
+  "Europe/Rome": "罗马",
+  "Europe/Amsterdam": "阿姆斯特丹",
+  "Europe/Zurich": "苏黎世",
+  "Europe/Stockholm": "斯德哥尔摩",
+  "Europe/Warsaw": "华沙",
+  "Europe/Istanbul": "伊斯坦布尔",
+  "Europe/Moscow": "莫斯科",
+  "Asia/Tokyo": "东京",
+  "Asia/Shanghai": "上海",
+  "Asia/Hong_Kong": "香港",
+  "Asia/Singapore": "新加坡",
+  "Asia/Seoul": "首尔",
+  "Asia/Taipei": "台北",
+  "Asia/Bangkok": "曼谷",
+  "Asia/Jakarta": "雅加达",
+  "Asia/Manila": "马尼拉",
+  "Asia/Kuala_Lumpur": "吉隆坡",
+  "Asia/Kolkata": "加尔各答",
+  "Asia/Dubai": "迪拜",
+  "Asia/Riyadh": "利雅得",
+  "Asia/Jerusalem": "耶路撒冷",
+  "Australia/Sydney": "悉尼",
+  "Australia/Melbourne": "墨尔本",
+  "Australia/Brisbane": "布里斯班",
+  "Australia/Perth": "珀斯",
+  "Pacific/Auckland": "奥克兰",
+  "Pacific/Honolulu": "檀香山",
+  "Africa/Cairo": "开罗",
+  "Africa/Johannesburg": "约翰内斯堡",
+  "Africa/Lagos": "拉各斯",
+  "Africa/Nairobi": "内罗毕",
+};
+
 function optionFor(id: string): TimezoneOption {
   const custom = featured[id];
   const parts = id.split("/");
   const city = custom?.city ?? parts.at(-1)?.replaceAll("_", " ") ?? id;
   const country = custom?.country ?? regionNames[parts[0] ?? ""] ?? "Other";
+  const displayCity = locale === "zh" ? (cityNamesZh[id] ?? city) : city;
+  const offset = new Intl.DateTimeFormat("en-US", {
+    timeZone: id,
+    timeZoneName: "longOffset",
+  })
+    .formatToParts(new Date())
+    .find((part) => part.type === "timeZoneName")?.value;
+  const utcOffset = offset === "GMT" ? "UTC+00:00" : offset?.replace(/^GMT/, "UTC");
 
   return {
     id,
     city,
     country,
     keywords: custom?.keywords ?? [],
-    label: `${city} — ${id}`,
+    label: `${displayCity} — ${id} (${utcOffset ?? t("utcOffsetUnavailable")})`,
   };
 }
 
@@ -113,7 +169,7 @@ export function searchTimezoneOptions(query: string): TimezoneOption[] {
   if (!normalized) return TIMEZONE_OPTIONS;
 
   return TIMEZONE_OPTIONS.filter((option) =>
-    [option.city, option.country, option.id, ...option.keywords].some((value) =>
+    [option.city, option.country, option.id, option.label, ...option.keywords].some((value) =>
       value.toLocaleLowerCase().includes(normalized),
     ),
   );

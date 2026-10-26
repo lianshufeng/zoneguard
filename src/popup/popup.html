@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZoneGuard</title>
+    <title data-i18n="extensionName">ZoneGuard</title>
     <link rel="stylesheet" href="./popup.css" />
   </head>
   <body>
@@ -12,23 +12,23 @@
         <img src="../icons/icon32.png" alt="" width="32" height="32" />
         <div>
           <h1>ZoneGuard</h1>
-          <p>Timezone control by site</p>
+          <p data-i18n="timezoneControlBySite">Timezone control by site</p>
         </div>
       </header>
 
-      <section class="panel switch-panel" aria-label="Global settings">
+      <section class="panel switch-panel" data-i18n-aria-label="globalSettings">
         <div>
           <strong>ZoneGuard</strong>
-          <span id="enabled-label" class="muted">Loading…</span>
+          <span id="enabled-label" class="muted" data-i18n="loading">Loading…</span>
         </div>
-        <label class="switch" aria-label="Turn ZoneGuard on or off">
+        <label class="switch" data-i18n-aria-label="toggleZoneGuard">
           <input id="enabled-toggle" type="checkbox" role="switch" />
           <span class="switch-track" aria-hidden="true"></span>
         </label>
       </section>
 
       <section class="field-section">
-        <label for="timezone-search">Timezone</label>
+        <label for="timezone-search" data-i18n="timezone">Timezone</label>
         <div class="combobox-wrap">
           <input id="timezone-search" type="text" autocomplete="off" spellcheck="false" />
           <ul id="timezone-options" class="combobox-list"></ul>
@@ -37,23 +37,25 @@
 
       <section class="panel site-panel" aria-live="polite">
         <div class="site-heading">
-          <span class="muted">Current site</span>
-          <span id="site-status" class="status-pill">Checking…</span>
+          <span class="muted" data-i18n="currentSite">Current site</span>
+          <span id="site-status" class="status-pill" data-i18n="checking">Checking…</span>
         </div>
         <strong id="site-host" class="site-host">—</strong>
         <p id="site-message" class="site-message"></p>
         <button id="add-site" class="button button-primary" type="button" hidden>
-          Add to whitelist
+          <span data-i18n="addToWhitelist">Add to whitelist</span>
         </button>
         <button id="manage-current" class="text-button" type="button" hidden>
-          Manage whitelist
+          <span data-i18n="manageWhitelist">Manage whitelist</span>
         </button>
       </section>
 
       <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
 
       <footer class="popup-footer">
-        <button id="manage-whitelist" class="text-button" type="button">Manage whitelist</button>
+        <button id="manage-whitelist" class="text-button" type="button" data-i18n="manageWhitelist">
+          Manage whitelist
+        </button>
         <span>v0.1.0</span>
       </footer>
     </main>

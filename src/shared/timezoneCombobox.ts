@@ -1,4 +1,5 @@
 import { searchTimezoneOptions, TIMEZONE_OPTIONS } from "./timezones";
+import { t } from "./i18n";
 import type { TimezoneOption } from "./types";
 
 export interface TimezoneCombobox {
@@ -71,7 +72,7 @@ export function mountTimezoneCombobox(
     if (!visibleOptions.length) {
       const empty = document.createElement("li");
       empty.className = "combobox-empty";
-      empty.textContent = "No timezones found.";
+      empty.textContent = t("noTimezonesFound");
       listbox.append(empty);
     }
     listbox.hidden = false;

@@ -3,6 +3,7 @@ import { logger } from "../shared/logger";
 import { matchesAnyWhitelistRule } from "../shared/patternMatcher";
 import { SettingsService } from "../shared/settings";
 import { hostnameFromUrl, isSupportedUrl } from "../shared/urlUtils";
+import { t } from "../shared/i18n";
 
 export interface TabReconcileResult {
   supported: boolean;
@@ -156,17 +157,17 @@ export function statusFromResult(result: TabReconcileResult): {
     return {
       status: "unsupported",
       hostname: result.hostname,
-      message: "This page cannot be controlled by ZoneGuard.",
+      message: t("pageCannotBeControlled"),
     };
   }
   if (!result.enabled) {
-    return { status: "disabled", hostname: result.hostname, message: "ZoneGuard is turned off." };
+    return { status: "disabled", hostname: result.hostname, message: t("zoneGuardOff") };
   }
   if (!result.matched) {
     return {
       status: "not-whitelisted",
       hostname: result.hostname,
-      message: "This site is not in your whitelist.",
+      message: t("siteNotInWhitelist"),
     };
   }
   if (result.debuggerError) {
@@ -180,12 +181,12 @@ export function statusFromResult(result: TabReconcileResult): {
     return {
       status: "protected",
       hostname: result.hostname,
-      message: "Timezone override is active for this tab.",
+      message: t("timezoneOverrideActive"),
     };
   }
   return {
     status: "debugger-unavailable",
     hostname: result.hostname,
-    message: "Unable to apply timezone to this tab.",
+    message: t("unableToApplyTimezone"),
   };
 }

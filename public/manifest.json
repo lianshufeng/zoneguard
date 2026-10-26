@@ -1,15 +1,16 @@
 {
   "manifest_version": 3,
-  "name": "ZoneGuard",
+  "default_locale": "en",
+  "name": "__MSG_extensionName__",
   "version": "0.1.0",
-  "description": "Control your browser timezone on selected websites.",
+  "description": "__MSG_extensionDescription__",
   "permissions": ["debugger", "storage", "tabs", "webNavigation"],
   "background": {
     "service_worker": "background/serviceWorker.js",
     "type": "module"
   },
   "action": {
-    "default_title": "ZoneGuard",
+    "default_title": "__MSG_extensionName__",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon16.png",

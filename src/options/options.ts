@@ -1,7 +1,10 @@
 import { mountTimezoneCombobox } from "../shared/timezoneCombobox";
 import { SettingsService } from "../shared/settings";
 import { SettingsValidationError } from "../shared/settings";
+import { applyI18n, localizeMessage, t } from "../shared/i18n";
 import type { ZoneGuardSettings, WhitelistRule } from "../shared/types";
+
+applyI18n();
 
 const settingsService = new SettingsService();
 const getElement = <T extends HTMLElement>(id: string): T => {
@@ -43,7 +46,7 @@ function renderRules(rules: readonly WhitelistRule[]): void {
     const toggle = document.createElement("input");
     toggle.type = "checkbox";
     toggle.checked = rule.enabled;
-    toggle.setAttribute("aria-label", `Enable ${rule.pattern}`);
+    toggle.setAttribute("aria-label", t("enableRule", { pattern: rule.pattern }));
     const pattern = document.createElement("span");
     pattern.className = "rule-pattern";
     pattern.textContent = rule.pattern;
@@ -52,8 +55,8 @@ function renderRules(rules: readonly WhitelistRule[]): void {
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "remove-button";
-    remove.textContent = "Remove";
-    remove.setAttribute("aria-label", `Remove ${rule.pattern}`);
+    remove.textContent = t("remove");
+    remove.setAttribute("aria-label", t("removeRule", { pattern: rule.pattern }));
 
     toggle.addEventListener("change", () => {
       toggle.disabled = true;
@@ -62,12 +65,12 @@ function renderRules(rules: readonly WhitelistRule[]): void {
         .then(async () => {
           settings = await settingsService.getSettings();
           renderRules(settings.whitelist);
-          setFeedback(ruleFeedback, toggle.checked ? "Rule enabled." : "Rule disabled.");
+          setFeedback(ruleFeedback, toggle.checked ? t("ruleEnabled") : t("ruleDisabledFeedback"));
         })
         .catch(() => {
           toggle.checked = rule.enabled;
           toggle.disabled = false;
-          setFeedback(ruleFeedback, "Unable to update this rule.", true);
+          setFeedback(ruleFeedback, t("unableToUpdateRule"), true);
         });
     });
 
@@ -78,11 +81,11 @@ function renderRules(rules: readonly WhitelistRule[]): void {
         .then(async () => {
           settings = await settingsService.getSettings();
           renderRules(settings.whitelist);
-          setFeedback(ruleFeedback, "Rule removed.");
+          setFeedback(ruleFeedback, t("ruleRemoved"));
         })
         .catch(() => {
           remove.disabled = false;
-          setFeedback(ruleFeedback, "Unable to remove this rule.", true);
+          setFeedback(ruleFeedback, t("unableToRemoveRule"), true);
         });
     });
 
@@ -107,7 +110,7 @@ enabledToggle.addEventListener("change", () => {
     })
     .catch(() => {
       enabledToggle.checked = settings.enabled;
-      setFeedback(ruleFeedback, "Unable to update ZoneGuard.", true);
+      setFeedback(ruleFeedback, t("unableToUpdateZoneGuard"), true);
     })
     .finally(() => {
       enabledToggle.disabled = false;
@@ -125,11 +128,13 @@ ruleForm.addEventListener("submit", (event) => {
       rulePattern.value = "";
       settings = await settingsService.getSettings();
       renderRules(settings.whitelist);
-      setFeedback(ruleFeedback, "Rule added.");
+      setFeedback(ruleFeedback, t("ruleAdded"));
     })
     .catch((error: unknown) => {
       const message =
-        error instanceof SettingsValidationError ? error.message : "Unable to add this rule.";
+        error instanceof SettingsValidationError
+          ? localizeMessage(error.message)
+          : t("unableToAddRule");
       setFeedback(ruleFeedback, message, true);
       rulePattern.focus();
     })
@@ -150,9 +155,9 @@ exportButton.addEventListener("click", () => {
       anchor.download = "zoneguard-settings.json";
       anchor.click();
       URL.revokeObjectURL(url);
-      setFeedback(dataFeedback, "Settings exported.");
+      setFeedback(dataFeedback, t("settingsExported"));
     })
-    .catch(() => setFeedback(dataFeedback, "Unable to export settings.", true))
+    .catch(() => setFeedback(dataFeedback, t("unableToExportSettings"), true))
     .finally(() => {
       exportButton.disabled = false;
     });
@@ -168,13 +173,15 @@ importFile.addEventListener("change", () => {
     .then((json) => settingsService.importSettings(json))
     .then((next) => {
       renderSettings(next);
-      setFeedback(dataFeedback, "Settings imported.");
+      setFeedback(dataFeedback, t("settingsImported"));
       setFeedback(ruleFeedback, "");
     })
     .catch((error: unknown) => {
       setFeedback(
         dataFeedback,
-        error instanceof SettingsValidationError ? error.message : "Unable to import this file.",
+        error instanceof SettingsValidationError
+          ? localizeMessage(error.message)
+          : t("unableToImportSettings"),
         true,
       );
     })
@@ -196,7 +203,7 @@ async function initialize(): Promise<void> {
         .then(renderSettings)
         .catch(() => {
           timezoneCombobox.setSelected(settings.timezone);
-          setFeedback(dataFeedback, "Select a valid IANA timezone.", true);
+          setFeedback(dataFeedback, t("selectValidTimezone"), true);
         });
     },
   );
@@ -208,9 +215,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
   void settingsService
     .getSettings()
     .then(renderSettings)
-    .catch(() => setFeedback(dataFeedback, "Unable to load your settings.", true));
+    .catch(() => setFeedback(dataFeedback, t("unableToLoadSettings"), true));
 });
 
-void initialize().catch(() =>
-  setFeedback(dataFeedback, "Unable to load ZoneGuard settings.", true),
-);
+void initialize().catch(() => setFeedback(dataFeedback, t("unableToLoadSettings"), true));

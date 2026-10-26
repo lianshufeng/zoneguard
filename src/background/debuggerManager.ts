@@ -1,5 +1,6 @@
 import { OWNED_TABS_STORAGE_KEY } from "../shared/constants";
 import { logger } from "../shared/logger";
+import { t } from "../shared/i18n";
 
 const CDP_VERSION = "1.3";
 const TIMEZONE_COMMAND = "Emulation.setTimezoneOverride";
@@ -12,9 +13,9 @@ function errorText(error: unknown): string {
 function userFacingError(error: unknown): string {
   const message = errorText(error).toLowerCase();
   if (message.includes("another debugger") || message.includes("already attached")) {
-    return "Another debugger may already be attached to this tab.";
+    return t("anotherDebuggerAttached");
   }
-  return "Unable to apply timezone to this tab.";
+  return t("unableToApplyTimezone");
 }
 
 export interface DebuggerReconcileResult {
@@ -37,9 +38,7 @@ export class DebuggerManager {
       this.recoveryCandidates.delete(tabId);
       this.failures.set(
         tabId,
-        reason === "canceled_by_user"
-          ? "The debugger session was disconnected."
-          : "The debugger session is unavailable.",
+        reason === "canceled_by_user" ? t("debuggerDisconnected") : t("debuggerSessionUnavailable"),
       );
       void this.persistOwnership();
       logger.warn("Debugger detached", tabId, reason);

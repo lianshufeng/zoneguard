@@ -1,4 +1,5 @@
 import type { GetTabStatusMessage, TabStatusResponse } from "./types";
+import { t } from "./i18n";
 
 export function isGetTabStatusMessage(value: unknown): value is GetTabStatusMessage {
   if (typeof value !== "object" || value === null) return false;
@@ -15,6 +16,6 @@ export function errorTabStatus(): TabStatusResponse {
   return {
     status: "debugger-unavailable",
     hostname: "",
-    message: "Unable to check this tab's timezone status.",
+    message: t("unableToCheckTabTimezone"),
   };
 }
